@@ -2,6 +2,9 @@ import AppWindow from "./AppWindow";
 import AboutApp from "../apps/AboutApp";
 import ProjectsApp from "../apps/ProjectsApp";
 import TerminalApp from "../apps/TerminalApp";
+import ResumeApp from "../apps/ResumeApp";
+import ContactApp from "../apps/ContactApp";
+import SkillsApp from "../apps/SkillsApp";
 
 export default function WindowManager({ windows }) {
   const topZ = windows.length ? Math.max(...windows.map((window) => window.z)) : 0;
@@ -22,6 +25,9 @@ export default function WindowManager({ windows }) {
           {window.type === "about" && <AboutApp />}
           {window.type === "projects" && <ProjectsApp />}
           {window.type === "terminal" && <TerminalApp />}
+          {window.type === "resume" && <ResumeApp />}
+          {window.type === "contact" && <ContactApp />}
+          {window.type === "skills" && <SkillsApp />}
         </AppWindow>
       ))}
     </>

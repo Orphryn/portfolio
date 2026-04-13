@@ -11,6 +11,9 @@ export default function DesktopShell() {
     { type: "projects", icon: "📂", label: "Projects" },
     { type: "terminal", icon: "⬛", label: "Terminal" },
     { type: "about", icon: "👤", label: "About Me" },
+    { type: "resume", icon: "📄", label: "Resume" },
+    { type: "skills", icon: "🛠️", label: "Skills" },
+    { type: "contact", icon: "✉️", label: "Contact" },
   ];
 
   return (
@@ -68,7 +71,7 @@ export default function DesktopShell() {
           border: "1px solid rgba(91,138,245,0.15)",
           color: "#cfd6f6",
           fontSize: 13,
-          maxWidth: 300,
+          maxWidth: 320,
           lineHeight: 1.6,
           backdropFilter: "blur(10px)",
           boxShadow: "0 10px 30px rgba(0,0,0,0.25)",
@@ -85,7 +88,7 @@ export default function DesktopShell() {
         >
           Welcome
         </div>
-        Explore Projects, About Me, or open the Terminal to navigate the portfolio like a computer.
+        Explore Projects, About Me, Resume, Skills, or open the Terminal to navigate the portfolio like a computer.
       </div>
 
       <WindowManager windows={windows} />

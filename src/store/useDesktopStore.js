@@ -4,20 +4,38 @@ const WINDOW_PRESETS = {
   projects: {
     title: "Projects",
     icon: "📂",
-    position: { x: 80, y: 40 },
-    size: { w: 620, h: 420 },
+    position: { x: 60, y: 70 },
+    size: { w: 720, h: 430 },
   },
   terminal: {
     title: "Terminal",
     icon: "⬛",
-    position: { x: 120, y: 70 },
-    size: { w: 580, h: 380 },
+    position: { x: 260, y: 280 },
+    size: { w: 620, h: 340 },
   },
   about: {
     title: "About Me",
     icon: "👤",
-    position: { x: 160, y: 50 },
-    size: { w: 500, h: 460 },
+    position: { x: 900, y: 240 },
+    size: { w: 540, h: 500 },
+  },
+  resume: {
+    title: "Resume",
+    icon: "📄",
+    position: { x: 180, y: 110 },
+    size: { w: 680, h: 520 },
+  },
+  contact: {
+    title: "Contact",
+    icon: "✉️",
+    position: { x: 980, y: 110 },
+    size: { w: 460, h: 400 },
+  },
+  skills: {
+    title: "Skills",
+    icon: "🛠️",
+    position: { x: 720, y: 120 },
+    size: { w: 560, h: 470 },
   },
 };
 
@@ -46,8 +64,8 @@ export const useDesktopStore = create((set, get) => ({
       type,
       title: preset.title,
       icon: preset.icon,
-      position: preset.position,
-      size: preset.size,
+      position: { ...preset.position },
+      size: { ...preset.size },
       z: nextZ,
     };
 
