@@ -20,11 +20,11 @@ export default function RoomScene() {
     const height = container.clientHeight;
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0a0a14);
-    scene.fog = new THREE.Fog(0x0a0a14, 6, 14);
+    scene.background = new THREE.Color(0x070b1a);
+    scene.fog = new THREE.Fog(0x070b1a, 7, 18);
 
     const camera = new THREE.PerspectiveCamera(55, width / height, 0.1, 100);
-    camera.position.set(0, 2.2, 3.8);
+    camera.position.set(0, 2.2, 4.2);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(width, height);
@@ -32,133 +32,196 @@ export default function RoomScene() {
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 0.9;
+    renderer.toneMappingExposure = 1.25;
 
     container.appendChild(renderer.domElement);
 
-    scene.add(new THREE.AmbientLight(0x303050, 0.4));
+    const ambientLight = new THREE.AmbientLight(0x8fa8ff, 0.9);
+    scene.add(ambientLight);
 
-    const pointLight = new THREE.PointLight(0xffa54d, 0.7, 8);
-    pointLight.position.set(-1.6, 2.5, -0.4);
-    pointLight.castShadow = true;
-    pointLight.shadow.mapSize.set(512, 512);
-    scene.add(pointLight);
+    const warmLight = new THREE.PointLight(0xffb56b, 1.8, 12);
+    warmLight.position.set(-1.8, 2.6, -0.3);
+    warmLight.castShadow = true;
+    warmLight.shadow.mapSize.set(1024, 1024);
+    scene.add(warmLight);
 
-    const monitorGlow = new THREE.PointLight(0x5b8af5, 0.6, 4);
-    monitorGlow.position.set(0, 1.7, -0.8);
+    const monitorGlow = new THREE.PointLight(0x4f7dff, 2.2, 7);
+    monitorGlow.position.set(0, 1.7, -1.2);
     scene.add(monitorGlow);
 
-    const rimLight = new THREE.DirectionalLight(0x8888cc, 0.2);
-    rimLight.position.set(3, 4, 2);
-    scene.add(rimLight);
+    const fillLight = new THREE.DirectionalLight(0x7c8cff, 0.8);
+    fillLight.position.set(2.8, 4, 2.5);
+    scene.add(fillLight);
 
     const floorMaterial = new THREE.MeshStandardMaterial({
-      color: 0x1a1209,
+      color: 0x2b1d12,
       roughness: 0.85,
     });
 
     const wallMaterial = new THREE.MeshStandardMaterial({
-      color: 0x1c1c2a,
-      roughness: 0.92,
+      color: 0x1b2340,
+      roughness: 0.95,
     });
 
     const deskMaterial = new THREE.MeshStandardMaterial({
-      color: 0x2a1a0e,
-      roughness: 0.65,
+      color: 0x5b3a22,
+      roughness: 0.7,
     });
 
     const metalMaterial = new THREE.MeshStandardMaterial({
-      color: 0x1a1a1a,
-      roughness: 0.25,
-      metalness: 0.85,
+      color: 0x2e3445,
+      roughness: 0.35,
+      metalness: 0.8,
     });
 
     const keyboardMaterial = new THREE.MeshStandardMaterial({
-      color: 0x222222,
-      roughness: 0.5,
+      color: 0x2d2d35,
+      roughness: 0.6,
     });
 
     const screenMaterial = new THREE.MeshStandardMaterial({
-      color: 0x1a2a4a,
-      emissive: 0x2244aa,
-      emissiveIntensity: 0.6,
+      color: 0x163a8a,
+      emissive: 0x2d6dff,
+      emissiveIntensity: 1.4,
     });
 
-    const floor = new THREE.Mesh(new THREE.PlaneGeometry(10, 10), floorMaterial);
+    const floor = new THREE.Mesh(new THREE.PlaneGeometry(12, 12), floorMaterial);
     floor.rotation.x = -Math.PI / 2;
     floor.receiveShadow = true;
     scene.add(floor);
 
-    const backWall = new THREE.Mesh(new THREE.PlaneGeometry(10, 5), wallMaterial);
-    backWall.position.set(0, 2.5, -2.5);
+    const backWall = new THREE.Mesh(new THREE.PlaneGeometry(12, 6), wallMaterial);
+    backWall.position.set(0, 3, -3);
     scene.add(backWall);
 
-    const deskTop = new THREE.Mesh(new THREE.BoxGeometry(2.8, 0.07, 1.1), deskMaterial);
-    deskTop.position.set(0, 1, -1.2);
+    const leftWall = new THREE.Mesh(new THREE.PlaneGeometry(12, 6), wallMaterial);
+    leftWall.position.set(-6, 3, 0);
+    leftWall.rotation.y = Math.PI / 2;
+    scene.add(leftWall);
+
+    const rightWall = new THREE.Mesh(new THREE.PlaneGeometry(12, 6), wallMaterial);
+    rightWall.position.set(6, 3, 0);
+    rightWall.rotation.y = -Math.PI / 2;
+    scene.add(rightWall);
+
+    const deskTop = new THREE.Mesh(
+      new THREE.BoxGeometry(3, 0.08, 1.2),
+      deskMaterial
+    );
+    deskTop.position.set(0, 1, -1.4);
     deskTop.castShadow = true;
     deskTop.receiveShadow = true;
     scene.add(deskTop);
 
     [
-      [-1.3, -1.7],
-      [-1.3, -0.7],
-      [1.3, -1.7],
-      [1.3, -0.7],
+      [-1.35, -1.9],
+      [-1.35, -0.9],
+      [1.35, -1.9],
+      [1.35, -0.9],
     ].forEach(([x, z]) => {
-      const leg = new THREE.Mesh(new THREE.BoxGeometry(0.06, 1, 0.06), deskMaterial);
+      const leg = new THREE.Mesh(
+        new THREE.BoxGeometry(0.08, 1, 0.08),
+        deskMaterial
+      );
       leg.position.set(x, 0.5, z);
       leg.castShadow = true;
       scene.add(leg);
     });
 
     const monitorFrame = new THREE.Mesh(
-      new THREE.BoxGeometry(1.1, 0.65, 0.04),
+      new THREE.BoxGeometry(1.2, 0.72, 0.05),
       metalMaterial
     );
-    monitorFrame.position.set(0, 1.6, -1.55);
+    monitorFrame.position.set(0, 1.62, -1.72);
     monitorFrame.castShadow = true;
     scene.add(monitorFrame);
 
-    const screen = new THREE.Mesh(new THREE.PlaneGeometry(1.02, 0.57), screenMaterial);
-    screen.position.set(0, 1.6, -1.529);
+    const screen = new THREE.Mesh(
+      new THREE.PlaneGeometry(1.1, 0.62),
+      screenMaterial
+    );
+    screen.position.set(0, 1.62, -1.69);
     scene.add(screen);
 
     const standNeck = new THREE.Mesh(
-      new THREE.BoxGeometry(0.07, 0.28, 0.07),
+      new THREE.BoxGeometry(0.08, 0.3, 0.08),
       metalMaterial
     );
-    standNeck.position.set(0, 1.19, -1.55);
+    standNeck.position.set(0, 1.22, -1.72);
     scene.add(standNeck);
 
     const standBase = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.18, 0.22, 0.03, 16),
+      new THREE.CylinderGeometry(0.2, 0.25, 0.04, 20),
       metalMaterial
     );
-    standBase.position.set(0, 1.04, -1.55);
+    standBase.position.set(0, 1.05, -1.72);
     scene.add(standBase);
 
     const keyboard = new THREE.Mesh(
-      new THREE.BoxGeometry(0.52, 0.015, 0.18),
+      new THREE.BoxGeometry(0.6, 0.02, 0.2),
       keyboardMaterial
     );
-    keyboard.position.set(-0.05, 1.05, -0.95);
+    keyboard.position.set(-0.1, 1.05, -1.05);
+    keyboard.castShadow = true;
     scene.add(keyboard);
 
     const mouse = new THREE.Mesh(
-      new THREE.BoxGeometry(0.055, 0.015, 0.09),
+      new THREE.BoxGeometry(0.06, 0.02, 0.1),
       keyboardMaterial
     );
-    mouse.position.set(0.42, 1.05, -0.95);
+    mouse.position.set(0.48, 1.05, -1.02);
+    mouse.castShadow = true;
     scene.add(mouse);
+
+    const pcTower = new THREE.Mesh(
+      new THREE.BoxGeometry(0.38, 0.78, 0.8),
+      new THREE.MeshStandardMaterial({
+        color: 0x1c2230,
+        roughness: 0.4,
+        metalness: 0.35,
+      })
+    );
+    pcTower.position.set(1.1, 1.4, -1.3);
+    pcTower.castShadow = true;
+    scene.add(pcTower);
+
+    const chairSeat = new THREE.Mesh(
+      new THREE.BoxGeometry(0.62, 0.08, 0.58),
+      new THREE.MeshStandardMaterial({
+        color: 0x20232f,
+        roughness: 0.65,
+      })
+    );
+    chairSeat.position.set(0, 0.72, 0.15);
+    chairSeat.castShadow = true;
+    scene.add(chairSeat);
+
+    const chairBack = new THREE.Mesh(
+      new THREE.BoxGeometry(0.62, 0.68, 0.07),
+      new THREE.MeshStandardMaterial({
+        color: 0x20232f,
+        roughness: 0.65,
+      })
+    );
+    chairBack.position.set(0, 1.08, 0.48);
+    chairBack.castShadow = true;
+    scene.add(chairBack);
+
+    const chairPole = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.035, 0.035, 0.5, 12),
+      metalMaterial
+    );
+    chairPole.position.set(0, 0.42, 0.15);
+    scene.add(chairPole);
 
     const raycaster = new THREE.Raycaster();
     const pointer = new THREE.Vector2();
     const mouseParallax = { x: 0, y: 0 };
 
-    const cameraStart = new THREE.Vector3(0, 2.2, 3.8);
-    const cameraEnd = new THREE.Vector3(0, 1.6, -0.6);
-    const lookStart = new THREE.Vector3(0, 1.4, -1.2);
-    const lookEnd = new THREE.Vector3(0, 1.6, -1.55);
+    const cameraStart = new THREE.Vector3(0, 2.2, 4.2);
+    const cameraEnd = new THREE.Vector3(0, 1.65, -0.45);
+    const lookStart = new THREE.Vector3(0, 1.45, -1.4);
+    const lookEnd = new THREE.Vector3(0, 1.62, -1.72);
     const lookTarget = new THREE.Vector3();
 
     const easeInOutCubic = (t) =>
@@ -207,7 +270,7 @@ export default function RoomScene() {
 
       if (stateRef.current.transitioning) {
         stateRef.current.progress = Math.min(
-          stateRef.current.progress + delta / 1.4,
+          stateRef.current.progress + delta / 1.25,
           1
         );
 
@@ -217,21 +280,21 @@ export default function RoomScene() {
         lookTarget.lerpVectors(lookStart, lookEnd, t);
         camera.lookAt(lookTarget);
 
-        screenMaterial.emissiveIntensity = 0.6 + t * 3;
-        monitorGlow.intensity = 0.6 + t * 2;
+        screenMaterial.emissiveIntensity = 1.4 + t * 3.2;
+        monitorGlow.intensity = 2.2 + t * 2.5;
 
         if (stateRef.current.progress >= 1) {
           enterOS();
           return;
         }
       } else {
-        camera.position.x = cameraStart.x + mouseParallax.x * 0.15;
-        camera.position.y = cameraStart.y - mouseParallax.y * 0.08;
-        lookTarget.set(0, 1.4, -1.2);
+        camera.position.x = cameraStart.x + mouseParallax.x * 0.18;
+        camera.position.y = cameraStart.y - mouseParallax.y * 0.1;
+        lookTarget.set(0, 1.45, -1.4);
         camera.lookAt(lookTarget);
 
-        const pulse = 0.55 + Math.sin(Date.now() * 0.003) * 0.08;
-        screenMaterial.emissiveIntensity = stateRef.current.hovered ? 0.9 : pulse;
+        const pulse = 1.2 + Math.sin(Date.now() * 0.003) * 0.18;
+        screenMaterial.emissiveIntensity = stateRef.current.hovered ? 1.8 : pulse;
       }
 
       renderer.render(scene, camera);
@@ -264,14 +327,17 @@ export default function RoomScene() {
   }, [enterOS]);
 
   return (
-    <div ref={mountRef} style={{ width: "100%", height: "100%", position: "relative" }}>
+    <div
+      ref={mountRef}
+      style={{ width: "100%", height: "100%", position: "relative" }}
+    >
       <div
         style={{
           position: "absolute",
           bottom: 32,
           left: "50%",
           transform: "translateX(-50%)",
-          color: "#6b7280",
+          color: "#8a93b8",
           fontFamily: "monospace",
           fontSize: 13,
           letterSpacing: 2,
