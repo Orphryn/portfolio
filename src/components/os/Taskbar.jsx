@@ -2,11 +2,11 @@ import { useClock } from "../../hooks/useClock";
 import { useDesktopStore } from "../../store/useDesktopStore";
 
 const COLORS = {
-  taskbar: "#0e0e18",
-  panelBorder: "#1e1e32",
-  accent: "#5b8af5",
-  textBright: "#e8ecf4",
-  textDim: "#6b7280",
+  taskbar: "rgba(7, 10, 24, 0.92)",
+  panelBorder: "rgba(122, 162, 255, 0.14)",
+  accent: "#7aa2ff",
+  textBright: "#f3f6ff",
+  textDim: "#7f89b6",
 };
 
 export default function Taskbar() {
@@ -24,67 +24,111 @@ export default function Taskbar() {
         bottom: 0,
         left: 0,
         right: 0,
-        height: 44,
-        background: `${COLORS.taskbar}ee`,
-        backdropFilter: "blur(12px)",
+        height: 48,
+        background: COLORS.taskbar,
+        backdropFilter: "blur(16px)",
         borderTop: `1px solid ${COLORS.panelBorder}`,
         display: "flex",
         alignItems: "center",
-        padding: "0 12px",
+        padding: "0 10px",
         zIndex: 9999,
       }}
     >
       <button
         onClick={exitOS}
         style={{
-          width: 32,
-          height: 32,
-          borderRadius: 8,
-          border: "none",
-          background: "rgba(91,138,245,0.15)",
+          minWidth: 34,
+          height: 34,
+          borderRadius: 10,
+          border: `1px solid ${COLORS.panelBorder}`,
+          background: "rgba(122, 162, 255, 0.1)",
           color: COLORS.accent,
           cursor: "pointer",
-          fontSize: 14,
-          marginRight: 12,
+          fontSize: 15,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          marginRight: 10,
+          transition: "all 0.15s ease",
         }}
+        onMouseEnter={(event) => {
+          event.currentTarget.style.background = "rgba(122, 162, 255, 0.18)";
+        }}
+        onMouseLeave={(event) => {
+          event.currentTarget.style.background = "rgba(122, 162, 255, 0.1)";
+        }}
+        title="Return to room"
       >
         ⏻
       </button>
 
-      <div style={{ flex: 1, display: "flex", gap: 4 }}>
-        {windows.map((window) => (
-          <button
-            key={window.id}
-            onClick={() => focusWindow(window.id)}
-            style={{
-              padding: "4px 12px",
-              borderRadius: 6,
-              border:
-                window.z === topZ
-                  ? `1px solid rgba(91,138,245,0.25)`
-                  : "1px solid transparent",
-              background:
-                window.z === topZ ? "rgba(91,138,245,0.12)" : "transparent",
-              color: window.z === topZ ? COLORS.textBright : COLORS.textDim,
-              cursor: "pointer",
-              fontSize: 12,
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-            }}
-          >
-            <span>{window.icon}</span>
-            {window.title}
-          </button>
-        ))}
+      <div
+        style={{
+          flex: 1,
+          display: "flex",
+          gap: 6,
+          alignItems: "center",
+          overflowX: "auto",
+          scrollbarWidth: "none",
+        }}
+      >
+        {windows.map((window) => {
+          const active = window.z === topZ;
+
+          return (
+            <button
+              key={window.id}
+              onClick={() => focusWindow(window.id)}
+              style={{
+                padding: "7px 12px",
+                borderRadius: 10,
+                border: active
+                  ? "1px solid rgba(122, 162, 255, 0.28)"
+                  : `1px solid ${COLORS.panelBorder}`,
+                background: active
+                  ? "rgba(122, 162, 255, 0.14)"
+                  : "rgba(255,255,255,0.03)",
+                color: active ? COLORS.textBright : COLORS.textDim,
+                cursor: "pointer",
+                fontSize: 12,
+                display: "flex",
+                alignItems: "center",
+                gap: 7,
+                whiteSpace: "nowrap",
+                minWidth: "fit-content",
+                transition: "all 0.15s ease",
+              }}
+              onMouseEnter={(event) => {
+                if (!active) {
+                  event.currentTarget.style.background = "rgba(255,255,255,0.06)";
+                }
+              }}
+              onMouseLeave={(event) => {
+                if (!active) {
+                  event.currentTarget.style.background = "rgba(255,255,255,0.03)";
+                }
+              }}
+            >
+              <span style={{ fontSize: 13 }}>{window.icon}</span>
+              <span>{window.title}</span>
+            </button>
+          );
+        })}
       </div>
 
       <div
         style={{
-          fontSize: 12,
+          marginLeft: 10,
+          padding: "6px 10px",
+          borderRadius: 10,
+          border: `1px solid ${COLORS.panelBorder}`,
+          background: "rgba(255,255,255,0.03)",
           color: COLORS.textDim,
+          fontSize: 12,
           fontFamily: "monospace",
-          letterSpacing: 0.5,
+          letterSpacing: 0.4,
+          minWidth: 62,
+          textAlign: "center",
         }}
       >
         {time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
