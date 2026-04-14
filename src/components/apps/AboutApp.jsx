@@ -1,12 +1,13 @@
 import { BIO } from "../../data/bio";
 
 const COLORS = {
-  accent: "#5b8af5",
-  accentDim: "#3d6ad4",
-  text: "#c8cdd8",
-  textDim: "#6b7280",
-  textBright: "#e8ecf4",
+  accent: "#7aa2ff",
+  accentDim: "#4f7dff",
+  text: "#d8def7",
+  textDim: "#7f89b6",
+  textBright: "#f3f6ff",
   yellow: "#facc15",
+  border: "rgba(122, 162, 255, 0.18)",
 };
 
 export default function AboutApp() {
@@ -16,6 +17,9 @@ export default function AboutApp() {
         padding: 24,
         color: COLORS.text,
         fontFamily: "'SF Pro Display', -apple-system, 'Segoe UI', sans-serif",
+        background:
+          "linear-gradient(180deg, rgba(11,16,39,0.98) 0%, rgba(10,13,30,0.98) 100%)",
+        minHeight: "100%",
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 20 }}>
@@ -47,6 +51,7 @@ export default function AboutApp() {
       <div style={{ fontSize: 13, color: COLORS.textDim, marginBottom: 6 }}>
         {BIO.school}
       </div>
+
       <div style={{ fontSize: 14, color: COLORS.yellow, marginBottom: 16 }}>
         {BIO.role}
       </div>
@@ -75,10 +80,10 @@ export default function AboutApp() {
               style={{
                 padding: "4px 10px",
                 borderRadius: 4,
-                background: "rgba(91,138,245,0.08)",
+                background: "rgba(122,162,255,0.1)",
                 color: COLORS.accent,
                 fontSize: 12,
-                border: "1px solid rgba(91,138,245,0.18)",
+                border: `1px solid ${COLORS.border}`,
               }}
             >
               {skill}
@@ -100,14 +105,61 @@ export default function AboutApp() {
           Links
         </div>
 
-        <div style={{ fontSize: 13 }}>
-          <div style={{ marginBottom: 4 }}>
-            <span style={{ color: COLORS.textDim }}>GitHub:</span>{" "}
-            <span style={{ color: COLORS.accent }}>{BIO.links.github}</span>
-          </div>
+        <div style={{ fontSize: 13, display: "grid", gap: 8 }}>
           <div>
-            <span style={{ color: COLORS.textDim }}>Email:</span>{" "}
-            <span style={{ color: COLORS.accent }}>{BIO.links.email}</span>
+            <span style={{ color: COLORS.textDim }}>GitHub: </span>
+            <a
+              href={BIO.links.githubUrl}
+              target="_blank"
+              rel="noreferrer"
+              style={{ color: COLORS.accent, textDecoration: "none" }}
+            >
+              {BIO.links.github}
+            </a>
+          </div>
+
+          <div>
+            <span style={{ color: COLORS.textDim }}>Email: </span>
+            <a
+              href={`mailto:${BIO.links.email}`}
+              style={{ color: COLORS.accent, textDecoration: "none" }}
+            >
+              {BIO.links.email}
+            </a>
+          </div>
+
+          <div>
+            <span style={{ color: COLORS.textDim }}>Phone: </span>
+            <a
+              href="tel:15619057258"
+              style={{ color: COLORS.accent, textDecoration: "none" }}
+            >
+              {BIO.links.phone}
+            </a>
+          </div>
+
+          <div>
+            <span style={{ color: COLORS.textDim }}>LinkedIn: </span>
+            <a
+              href={BIO.links.linkedinUrl}
+              target="_blank"
+              rel="noreferrer"
+              style={{ color: COLORS.accent, textDecoration: "none" }}
+            >
+              {BIO.links.linkedin}
+            </a>
+          </div>
+
+          <div>
+            <span style={{ color: COLORS.textDim }}>Resume: </span>
+            <a
+              href={BIO.links.resume}
+              target="_blank"
+              rel="noreferrer"
+              style={{ color: COLORS.accent, textDecoration: "none" }}
+            >
+              open resume.pdf
+            </a>
           </div>
         </div>
       </div>

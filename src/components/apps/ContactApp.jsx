@@ -1,3 +1,5 @@
+import { BIO } from "../../data/bio";
+
 const COLORS = {
   text: "#d8def7",
   textDim: "#7f89b6",
@@ -10,17 +12,32 @@ const COLORS = {
 const CONTACTS = [
   {
     label: "Email",
-    value: "Davidfertil@outlook.com",
+    value: BIO.links.email,
+    href: `mailto:${BIO.links.email}`,
     hint: "Best for opportunities and direct contact",
   },
   {
+    label: "Phone",
+    value: BIO.links.phone,
+    href: "tel:15619057258",
+    hint: "Direct contact",
+  },
+  {
     label: "GitHub",
-    value: "github.com/Orphryn",
+    value: BIO.links.github,
+    href: BIO.links.githubUrl,
     hint: "Code, projects, and ongoing work",
+  },
+  {
+    label: "LinkedIn",
+    value: BIO.links.linkedin,
+    href: BIO.links.linkedinUrl,
+    hint: "Professional profile and networking",
   },
   {
     label: "Location",
     value: "Belle Glade, Florida",
+    href: null,
     hint: "Open to remote-friendly opportunities",
   },
 ];
@@ -75,17 +92,38 @@ export default function ContactApp() {
             >
               {item.label}
             </div>
-            <div
-              style={{
-                fontSize: 15,
-                color: COLORS.accent,
-                fontWeight: 600,
-                marginBottom: 4,
-                wordBreak: "break-word",
-              }}
-            >
-              {item.value}
-            </div>
+
+            {item.href ? (
+              <a
+                href={item.href}
+                target={item.href.startsWith("http") ? "_blank" : undefined}
+                rel={item.href.startsWith("http") ? "noreferrer" : undefined}
+                style={{
+                  fontSize: 15,
+                  color: COLORS.accent,
+                  fontWeight: 600,
+                  marginBottom: 4,
+                  wordBreak: "break-word",
+                  textDecoration: "none",
+                  display: "inline-block",
+                }}
+              >
+                {item.value}
+              </a>
+            ) : (
+              <div
+                style={{
+                  fontSize: 15,
+                  color: COLORS.accent,
+                  fontWeight: 600,
+                  marginBottom: 4,
+                  wordBreak: "break-word",
+                }}
+              >
+                {item.value}
+              </div>
+            )}
+
             <div style={{ fontSize: 12, color: COLORS.textDim }}>{item.hint}</div>
           </div>
         ))}
